@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/inputs/Input";
-
+import { validateEmail } from "../../utils/helper";
 const Login = ({ setCurrentPage }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,6 +12,22 @@ const Login = ({ setCurrentPage }) => {
   // Handle Login Form Submit
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!validateEmail(email)) {
+      setError("Please Enter a valid email address");
+      return;
+    }
+    if (!password) {
+      setError("Please Enter the password");
+      return;
+    }
+    setError("");
+    //Login API CaLL
+    try {
+    } catch (error) {
+      if (error.response && error.response.data.message)
+        setError(error.response.data.message);
+      else setError("Something went wrong. Please try again");
+    }
   };
   return (
     <>
@@ -37,14 +53,16 @@ const Login = ({ setCurrentPage }) => {
             type="password"
           />
 
-          {error && <p className="text-red-500 text-xs pb-2.5">{error}</p> }
+          {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
 
-          <button type="submit" className="btn-primary">LOGIN</button>
+          <button type="submit" className="btn-primary">
+            LOGIN
+          </button>
           <p className="text-[13px] text-slate-800 mt-3">
             Don't have an account?{" "}
             <button
               className="font-medium text-primary underline cursor-pointer"
-              onClick={()=>{
+              onClick={() => {
                 setCurrentPage("signup");
               }}
             >
