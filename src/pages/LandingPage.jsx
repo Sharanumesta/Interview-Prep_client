@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import HERO_IMG from "../assets/hero-img.png";
 import { APP_FEATURES } from "../utils/data";
 import { useNavigate } from "react-router-dom";
@@ -6,14 +6,20 @@ import { LuSparkles } from "react-icons/lu";
 import Modal from "../components/loader/Modal";
 import Login from "./Auth/Login";
 import SignUp from "./Auth/SignUp";
+import ProfileInfoCard from "../components/cards/ProfileInfoCard"
+import { UserContext } from "../context/userContext";
 
 const LandingPage = () => {
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [currentPage, setCurrentPage] = useState("login");
 
-  const handleCTA = () => {};
+  const handleCTA = () => {
+    if (!user) setOpenAuthModal(true);
+    else navigate("/dashboard");
+  };
   return (
     <>
       <div className="w-full min-h-full bg-[#fffcef]">
@@ -23,12 +29,16 @@ const LandingPage = () => {
           {/* Header */}
           <header className="flex justify-between items-center mb-16">
             <div className="text-xl">Interview Prep AI</div>
-            <button
-              className="bg-gradient-to-r from-[#ff9324] to-[#c99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full border border-transparent hover:from-[#c99a4b] hover:to-[#ff9324] hover:scale-105 transition-all duration-300 cursor-pointer"
-              onClick={() => setOpenAuthModal(true)}
-            >
-              Login / Sign Up
-            </button>
+            {user ? (
+              <ProfileInfoCard />
+            ) : (
+              <button
+                className="bg-gradient-to-r from-[#ff9324] to-[#c99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full border border-transparent hover:from-[#c99a4b] hover:to-[#ff9324] hover:scale-105 transition-all duration-300 cursor-pointer"
+                onClick={() => setOpenAuthModal(true)}
+              >
+                Login / Sign Up
+              </button>
+            )}
           </header>
 
           {/* Hero Content */}
