@@ -6,6 +6,10 @@ import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
+import SummaryCard from "../../components/cards/SummaryCard";
+import moment from "moment";
+import Modal from "../../components/loader/Modal";
+import CreateSessionForm from "./CreateSessionForm";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -61,6 +65,15 @@ const Dashboard = () => {
           Add new
         </button>
       </div>
+      <Modal
+        isOpen={openCreteModal}
+        onClose={() => setOpenCreateModal(false)}
+        hideHeader
+      >
+        <div className="">
+          <CreateSessionForm />
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 };
