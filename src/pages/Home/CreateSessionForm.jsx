@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Input from "../../components/inputs/Input";
 import SpinnerLoader from "../../components/loader/SpinnerLoader";
 import axiosInstance from "../../utils/axiosInstance";
@@ -46,15 +46,16 @@ const CreateSessionForm = () => {
       const generateQuestions = aiResponse.data;
       const response = await axiosInstance.post(API_PATHS.SESSION.CREATE, {
         ...formData,
-        question: generateQuestions,
+        questions: generateQuestions,
       });
-      if (response.data?.sessions?._id)
-        navigate(`/interview-prep/${response.data?.sessions?._id}`);
+      console.log(response.data.session._id);
+      if (response.data?.session?._id)
+        navigate(`/interview-prep/${response.data?.session?._id}`);
     } catch (error) {
       if (error.response && error.response.data.message)
         setError(error.response.data.message);
       else setError("Something went wrong, Please try again.");
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   };

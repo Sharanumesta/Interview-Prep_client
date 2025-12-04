@@ -3,7 +3,7 @@ import { BASE_URL } from "./apiPath";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
-  timeout: 8000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -28,10 +28,14 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // Handle common errors globally
     if (error.response) {
-      if (error.status === 401)
+      if (error.response.status === 401) {
         // Redirect to login page
         window.location.href = "/";
-    } else if (error.code === "ECONNABORTED") {
+        return;
+      }
+    }
+    if (error.code === "ECONNABORTED") {
+      console.log(error)
       console.error("Request timeout, Please try again");
     }
     return Promise.reject(error);
